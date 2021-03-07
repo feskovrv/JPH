@@ -8,23 +8,32 @@ export default class App extends Component {
             users: [],
             posts: []
         };
-        this.setNewState=this.setNewState.bind(this);
+        this.setNewState=this.setNewStateUsers.bind(this);
         this.getUsers=this.getUsers.bind(this);
     }
     componentDidMount(){
         this.getUsers();
+        this.getPosts();
     }
     getUsers(){
         fetch('https://jsonplaceholder.typicode.com/users')
             .then(response=>response.json())
-            .then(users=>{this.setNewState(users)})
+            .then(users=>this.setState({users}))
     }
-    setNewState(data){
-        this.setState({users: [data]});
+    setNewStateUsers(data){
+        this.setState({users: data});
+    }
+    getPosts(){
+        fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(response=>response.json())
+            .then(posts=>this.setState({posts}))
     }
     render(){
         return(
-            <PostList users={this.state.users} />
+            <PostList 
+                users={this.state.users} 
+                posts={this.state.posts}    
+            />
         )
     }
 }
